@@ -10,7 +10,7 @@ class psquared::git(
   
   $control_repo_path = "${repo_path}/${control_repo}"
   $ssh_path = "${repo_path}/.ssh"
-  $hook_filename = ".git/hooks/post-receive"
+  $hook_filename = "hooks/post-receive"
 
   File {
     owner => $admin_user,
@@ -18,13 +18,27 @@ class psquared::git(
     mode  => '0755',
   } 
 
+  file { "/etc/puppetlabs/r10k/r10k.yaml":
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/r10k.yaml.erb"),
+  }
+
+  sudo::conf { 'admins':
+    priority => 99,
+    content  => "${admin_user} ALL=(root) NOPASSWD: /opt/puppetlabs/puppet/bin/r10k",
+  }
+
   file { $repo_path:
     ensure => directory,
   }
 
   vcsrepo { $control_repo_path:
-    ensure   => present,
+    ensure   => bare,
     provider => git,
+    user     => $admin_user,
   }
 
   file { "${control_repo_path}/${hook_filename}":

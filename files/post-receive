@@ -1,2 +1,2 @@
 #!/bin/bash
-r10k deploy environment -pv
+sudo r10k deploy environment -pv
