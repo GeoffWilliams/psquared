@@ -5,6 +5,7 @@ class psquared::git(
     $supplemental_repos = [],
     $authorised_keys = [],
     $admin_key = present,
+    $admin_user = 'psquared',
 ) {
   
   $control_repo_path = "${repo_path}/${control_repo}"
@@ -12,8 +13,8 @@ class psquared::git(
   $hook_filename = ".git/hooks/post-receive"
 
   File {
-    owner => 'root',
-    group => 'root',
+    owner => $admin_user,
+    group => $admin_user,
     mode  => '0755',
   } 
 
@@ -33,25 +34,32 @@ class psquared::git(
   }
 
   # admin key :)
-  user { "psquared":
+  user { $admin_user:
     ensure  => $admin_key,
-    homedir => $repo_path,
+    home    => $repo_path,
   }
 
   $ssh_keyname = "psquared@${fqdn}"
-
+  include sshkeys
   sshkeys::ssh_keygen{ $ssh_keyname:
     ensure => $admin_key,
   }
 
   sshkeys::install_keypair { $ssh_keyname: 
     ensure  => $admin_key,
-    ssh_dir => $admin_key,
+    ssh_dir => $ssh_path,
+    require => Sshkeys::Ssh_keygen[$ssh_keyname],
   }
 
   # fixme - need to update sshkeys to allow removal
   sshkeys::known_host { $ssh_keyname: 
-    ssh_dir => $admin_key,
+    ssh_dir => $ssh_path,
   }
 
+  # fixme - grant access to the account to other users
+  sshkeys::authorize { $admin_user:
+    ensure          => $admin_key,
+    authorized_keys => [$ssh_keyname],
+    ssh_dir         => $ssh_path,
+  }
 }
