@@ -55,6 +55,14 @@ basic use of the module.
 
 ## Usage
 
+
+### Change the master branch to be production
+git clone ssh://psquared@PUPPETMASTER.HOST.NAME/var/lib/psquared/r10k-control/ 
+git symbolic-ref HEAD refs/heads/production
+git push origin production
+
+
+
 This section is where you describe how to customize, configure, and do the
 fancy stuff with your module here. It's especially helpful if you include usage
 examples and code samples for doing things with your module.

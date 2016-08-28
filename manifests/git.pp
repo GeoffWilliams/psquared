@@ -1,4 +1,4 @@
-# Built-in puppet git server
+# Built-in puppet enterprise git server
 class psquared::git(
     $repo_path = '/var/lib/psquared',
     $control_repo = 'r10k-control',
@@ -26,9 +26,14 @@ class psquared::git(
     content => template("${module_name}/r10k.yaml.erb"),
   }
 
-  sudo::conf { 'admins':
+  sudo::conf { 'admins_r10k':
     priority => 99,
-    content  => "${admin_user} ALL=(root) NOPASSWD: /opt/puppetlabs/puppet/bin/r10k",
+    content  => "${admin_user} ALL=(pe-puppet) NOPASSWD: /opt/puppetlabs/puppet/bin/r10k",
+  }
+
+  sudo::conf { 'admins_curl':
+    priority => 99,
+    content  => "${admin_user} ALL=(pe-puppet) NOPASSWD: /bin/curl",
   }
 
   file { $repo_path:
