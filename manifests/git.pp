@@ -60,14 +60,10 @@ class psquared::git(
 
   $ssh_keyname = "psquared@${fqdn}"
   include sshkeys
-  sshkeys::ssh_keygen{ $ssh_keyname:
-    ensure => $admin_key,
-  }
 
   sshkeys::install_keypair { $ssh_keyname: 
     ensure  => $admin_key,
     ssh_dir => $ssh_path,
-    require => Sshkeys::Ssh_keygen[$ssh_keyname],
   }
 
   # fixme - need to update sshkeys to allow removal
