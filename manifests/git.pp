@@ -31,7 +31,7 @@ class psquared::git(
   $delta_classes = {
     'puppet_enterprise::profile::master' => {
       'code_manager_auto_configure' => 'true',
-      'r10k_remote'                 => $upstream,
+      'r10k_remote'                 => $repo_path,
     }
   }
   node_group { 'PE Master':
