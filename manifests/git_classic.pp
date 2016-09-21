@@ -19,13 +19,6 @@ class psquared::git(
     mode  => '0755',
   } 
 
-  #file { "/etc/puppetlabs/r10k/r10k.yaml":
-  #  ensure  => file,
-  #  owner   => 'root',
-  #  group   => 'root',
-  #  mode    => '0644',
-  #  content => template("${module_name}/r10k.yaml.erb"),
-  #}
   $master_group = 'PE Master'
   $original_classes = node_groups($master_group)[$master_group]['classes']
   $delta_classes = {
@@ -41,16 +34,6 @@ class psquared::git(
     override_environment => 'false',
     parent               => 'PE Infrastructure',
     rule                 => ['or', ['=', 'name', 'pe-puppet.localdomain']],
-  }
-
-  sudo::conf { 'admins_r10k':
-    priority => 99,
-    content  => "${admin_user} ALL=(pe-puppet) NOPASSWD: /opt/puppetlabs/puppet/bin/r10k",
-  }
-
-  sudo::conf { 'admins_curl':
-    priority => 99,
-    content  => "${admin_user} ALL=(pe-puppet) NOPASSWD: /bin/curl",
   }
 
   file { $repo_path:
