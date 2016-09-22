@@ -30,7 +30,7 @@ class psquared::git(
   $original_classes = node_groups($master_group)[$master_group]['classes']
   $delta_classes = {
     'puppet_enterprise::profile::master' => {
-      'code_manager_auto_configure' => 'true',
+      'code_manager_auto_configure' => true,
       'r10k_remote'                 => $repo_path,
     }
   }
