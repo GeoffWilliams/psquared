@@ -40,7 +40,7 @@ class psquared::git(
     environment          => 'production',
     override_environment => 'false',
     parent               => 'PE Infrastructure',
-    rule                 => ['or', ['=', 'name', 'pe-puppet.localdomain']],
+    #rule                 => ['or', ['=', 'name', 'pe-puppet.localdomain']],
   }
 
   sudo::conf { 'admins_r10k':
