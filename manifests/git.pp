@@ -1,6 +1,6 @@
 # Built-in puppet enterprise git server
 class psquared::git(
-    $repo_path          = '/var/lib/psquared',
+    $repo_path          = '/var/lib/psquared/r10k-control',
     $upstream           = 'https://github.com/GeoffWilliams/r10k-control/',
     $control_repo       = 'r10k-control',
     $supplemental_repos = [],
@@ -31,7 +31,7 @@ class psquared::git(
   $delta_classes = {
     'puppet_enterprise::profile::master' => {
       'code_manager_auto_configure' => true,
-      'r10k_remote'                 => $repo_path,
+      'r10k_remote'                 => $control_repo_path,
     }
   }
   node_group { 'PE Master':
