@@ -1,6 +1,6 @@
 # Built-in puppet enterprise git server
 class psquared::git(
-    $repo_path          = '/var/lib/psquared/r10k-control',
+    $repo_path          = '/var/lib/psquared',
     $upstream           = 'https://github.com/GeoffWilliams/r10k-control/',
     $control_repo       = 'r10k-control',
     $supplemental_repos = [],
