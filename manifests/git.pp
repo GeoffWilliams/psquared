@@ -87,9 +87,10 @@ class psquared::git(
     ssh_dir         => $ssh_path,
   }
 
-  exec { "install token":
-    command => "cd ${repo_path} && pe_rbac code_manager --password ${admin_password}",
+  exec { "install_token_psquared":
+    command => "cd ${repo_path} && pe_rbac code_manager --password ${admin_password} && chown -R ${admin_user}.${admin_user} ${repo_path}/.puppetlabs",
     creates => "${repo_path}/.puppetlabs/token",
+    environment => "HOME=$repo_path",
     path    => ["/opt/puppetlabs/puppet/bin/", "/usr/bin", "/bin"],
   }
 }
