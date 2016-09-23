@@ -88,7 +88,7 @@ class psquared::git(
   }
 
   exec { "install token":
-    command => "cd ${repo_path} && pe_rbac code_manager --password ${admin_password} && puppet agent -t",
+    command => "cd ${repo_path} && pe_rbac code_manager --password ${admin_password}",
     creates => "${repo_path}/.puppetlabs/token",
     path    => ["/opt/puppetlabs/puppet/bin/", "/usr/bin", "/bin"],
   }
