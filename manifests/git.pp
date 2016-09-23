@@ -7,7 +7,7 @@ class psquared::git(
     $authorised_keys    = [],
     $admin_key          = present,
     $admin_user         = 'psquared',
-    $admin_passwd       = 'changeme',
+    $admin_password     = 'changeme',
 ) {
   
   $control_repo_path = "${repo_path}/${control_repo}"
