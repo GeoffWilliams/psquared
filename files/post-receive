@@ -1,34 +1,4 @@
 #!/bin/bash
 
 # deploy main puppetfile and all environments
-sudo -u pe-puppet r10k deploy environment -pv
-
-# deploy vendored puppetfiles in each environment
-vendor_puppetfile="r_profile"
-if [ $(puppet lastrun filesync) == "on" ] ; then
-  codedir=$(puppet config print codedir)-staging
-else
-  codedir=$(puppet config print codedir)
-fi
-env_dir="${codedir}/environments"
-
-if [ -d $env_dir ] ; then
-  for e in $env_dir/* ; do
-    env_puppetfile="${e}/modules/${vendor_puppetfile}"
-    if [ -f "${env_puppetfile}/Puppetfile" ] ; then
-      cd $env_puppetfile
-      r10k puppetfile install -v
-    fi
-  done
-fi
-
-
-fqdn=$(facter fqdn)
-cacert="/etc/puppetlabs/puppet/ssl/certs/ca.pem"
-cert="/etc/puppetlabs/puppet/ssl/certs/${fqdn}.pem"
-key="/etc/puppetlabs/puppet/ssl/private_keys/${fqdn}.pem"
-sudo -u pe-puppet curl --request POST \
-  --header "Content-Type: application/json" \
-  --data '{"commit-all": true}' \
-  --cert "${cert}" --key "${key}" --cacert "${cacert}" \
-  "https://${fqdn}:8140/file-sync/v1/commit"
+code-manager deploy --all

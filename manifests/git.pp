@@ -7,6 +7,7 @@ class psquared::git(
     $authorised_keys    = [],
     $admin_key          = present,
     $admin_user         = 'psquared',
+    $admin_passwd       = 'changeme',
 ) {
   
   $control_repo_path = "${repo_path}/${control_repo}"
@@ -40,17 +41,6 @@ class psquared::git(
     environment          => 'production',
     override_environment => 'false',
     parent               => 'PE Infrastructure',
-    #rule                 => ['or', ['=', 'name', 'pe-puppet.localdomain']],
-  }
-
-  sudo::conf { 'admins_r10k':
-    priority => 99,
-    content  => "${admin_user} ALL=(pe-puppet) NOPASSWD: /opt/puppetlabs/puppet/bin/r10k",
-  }
-
-  sudo::conf { 'admins_curl':
-    priority => 99,
-    content  => "${admin_user} ALL=(pe-puppet) NOPASSWD: /bin/curl",
   }
 
   file { $repo_path:
@@ -95,5 +85,11 @@ class psquared::git(
     ensure          => $admin_key,
     authorized_keys => [$ssh_keyname],
     ssh_dir         => $ssh_path,
+  }
+
+  exec { "install token":
+    command => "cd ${repo_path} && pe_rbac code_manager --password ${admin_password} && puppet agent -t",
+    creates => "${repo_path}/.puppetlabs/token",
+    path    => ["/opt/puppetlabs/puppet/bin/", "/usr/bin", "/bin"],
   }
 }
