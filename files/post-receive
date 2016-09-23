@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # deploy main puppetfile and all environments
-code-manager deploy --all
+/opt/puppetlabs/bin/puppet-code deploy --all
