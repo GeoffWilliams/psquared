@@ -2,6 +2,7 @@
 class psquared::agent_installers(
     $install                = true,
     $install_pe_only_agents = false,
+    $install_osx_agents     = false,
 ){
 
   # prevent timeout errors
@@ -39,9 +40,6 @@ class psquared::agent_installers(
     include pe_repo::platform::fedora_23_x86_64
     include pe_repo::platform::fedora_24_i386
     include pe_repo::platform::fedora_24_x86_64
-    include pe_repo::platform::osx_1011_x86_64
-    include pe_repo::platform::osx_1010_x86_64
-    include pe_repo::platform::osx_109_x86_64
     include pe_repo::platform::sles_10_i386
     include pe_repo::platform::sles_10_x86_64
     include pe_repo::platform::sles_11_i386
@@ -57,5 +55,11 @@ class psquared::agent_installers(
     include pe_repo::platform::ubuntu_1604_i386
     include pe_repo::platform::windows_i386
     include pe_repo::platform::windows_x86_64
+  }
+
+  if $install_osx_agents {
+    include pe_repo::platform::osx_1011_x86_64
+    include pe_repo::platform::osx_1010_x86_64
+    include pe_repo::platform::osx_109_x86_64
   }
 }
