@@ -1,7 +1,6 @@
 # Download all known puppet agent installers
 class psquared::agent_installers(
     $install                = true,
-    $install_pe_only_agents = false,
     $install_osx_agents     = false,
 ){
 
@@ -10,21 +9,19 @@ class psquared::agent_installers(
     timeout => 1800, # 30 mins
   }
 
-  if $install {  
+  if $install {
     # Just install everything - this list can be generated with the command:
     # fgrep class  /opt/puppetlabs/puppet/modules/pe_repo/manifests/platform/*.pp -h | sed 's/class/include/g' | sed 's/(//g'
 
-    if $install_pe_only_agents {
-      include pe_repo::platform::aix_53_power
-      include pe_repo::platform::aix_61_power
-      include pe_repo::platform::aix_71_power
-      include pe_repo::platform::el_4_i386
-      include pe_repo::platform::el_4_x86_64
-      include pe_repo::platform::solaris_10_i386
-      include pe_repo::platform::solaris_10_sparc
-      include pe_repo::platform::solaris_11_i386
-      include pe_repo::platform::solaris_11_sparc
-    }
+    include pe_repo::platform::aix_53_power
+    include pe_repo::platform::aix_61_power
+    include pe_repo::platform::aix_71_power
+    include pe_repo::platform::el_4_i386
+    include pe_repo::platform::el_4_x86_64
+    include pe_repo::platform::solaris_10_i386
+    include pe_repo::platform::solaris_10_sparc
+    include pe_repo::platform::solaris_11_i386
+    include pe_repo::platform::solaris_11_sparc
     include pe_repo::platform::debian_7_amd64
     include pe_repo::platform::debian_7_i386
     include pe_repo::platform::debian_8_amd64
