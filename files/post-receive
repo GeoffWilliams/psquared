@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # deploy main puppetfile and all environments
-/opt/puppetlabs/bin/puppet-code deploy --all --wait
+/opt/puppetlabs/bin/puppet-code deploy -l info --all --wait
