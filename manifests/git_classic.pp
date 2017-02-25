@@ -1,5 +1,5 @@
 # Built-in puppet enterprise git server
-class psquared::git(
+class psquared::git_classic(
     $repo_path          = '/var/lib/psquared',
     $upstream           = 'https://github.com/GeoffWilliams/r10k-control/',
     $control_repo       = 'r10k-control',
@@ -8,7 +8,7 @@ class psquared::git(
     $admin_key          = present,
     $admin_user         = 'psquared',
 ) {
-  
+
   $control_repo_path = "${repo_path}/${control_repo}"
   $ssh_path = "${repo_path}/.ssh"
   $hook_filename = "hooks/post-receive"
@@ -17,7 +17,7 @@ class psquared::git(
     owner => $admin_user,
     group => $admin_user,
     mode  => '0755',
-  } 
+  }
 
   $master_group = 'PE Master'
   $original_classes = node_groups($master_group)[$master_group]['classes']
@@ -49,27 +49,27 @@ class psquared::git(
   }
 
   file { "${control_repo_path}/${hook_filename}":
-    ensure   => file,
-    mode     => '0755',
-    source   => "puppet:///modules/${module_name}/post-receive",
+    ensure => file,
+    mode   => '0755',
+    source => "puppet:///modules/${module_name}/post-receive",
   }
 
   # admin key :)
   user { $admin_user:
-    ensure  => $admin_key,
-    home    => $repo_path,
+    ensure => $admin_key,
+    home   => $repo_path,
   }
 
   $ssh_keyname = "psquared@${fqdn}"
   include sshkeys
 
-  sshkeys::install_keypair { $ssh_keyname: 
+  sshkeys::install_keypair { $ssh_keyname:
     ensure  => $admin_key,
     ssh_dir => $ssh_path,
   }
 
   # fixme - need to update sshkeys to allow removal
-  sshkeys::known_host { $ssh_keyname: 
+  sshkeys::known_host { $ssh_keyname:
     ssh_dir => $ssh_path,
   }
 

@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/GeoffWilliams/psquared.svg?branch=master)](https://travis-ci.org/GeoffWilliams/psquared)
 # psquared
 
 #### Table of Contents
@@ -14,78 +15,65 @@
 
 ## Description
 
-Start with a one- or two-sentence summary of what the module does and/or what
-problem it solves. This is your 30-second elevator pitch for your module.
-Consider including OS/Puppet version it works with.
+PSquared brings additional features and an easier UX for users of Puppet Enterprise by supporting:
+* Download of all known agent installer repositories
+* Built in git server with pre-configured SSH access
+* Automatic configuration of Code Manager
+* Automatic Code Manager token creation and installation
 
-You can give more descriptive information in a second paragraph. This paragraph
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?" If your module has a range of functionality (installation, configuration,
-management, etc.), this is the time to mention it.
-
-## Setup
-
-### What psquared affects **OPTIONAL**
-
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
-
-If there's more that they should know about, though, this is the place to mention:
-
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section
-here.
-
-### Beginning with psquared
-
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most
-basic use of the module.
 
 ## Usage
 
+Most classes will need to be loaded using the `class` resource syntax in order to pass the appropriate class defaults, eg:
 
-### Change the master branch to be production
-git clone ssh://psquared@PUPPETMASTER.HOST.NAME/var/lib/psquared/r10k-control/ 
+```puppet
+class { "foo:bar":
+  param1 => "value1",
+  param2 => "value2",
+}
+```
+
+Parameters, where available, are documented inside the individual classes.  See [Reference section](#reference).
+
+### Git Server
+#### Change the master branch to be production
+```shell
+git clone ssh://psquared@PUPPETMASTER.HOST.NAME/var/lib/psquared/r10k-control/
 git symbolic-ref HEAD refs/heads/production
 git push origin production
+```
 
-
-
-This section is where you describe how to customize, configure, and do the
-fancy stuff with your module here. It's especially helpful if you include usage
-examples and code samples for doing things with your module.
 
 ## Reference
+Reference documentation is generated directly from source code using [puppet-strings](https://github.com/puppetlabs/puppet-strings).  You may regenerate the documentation by running:
 
-Here, include a complete list of your module's classes, types, providers,
-facts, along with the parameters for each. Users refer to this section (thus
-the name "Reference") to find specific details; most users don't read it per
-se.
+```shell
+bundle exec puppet strings
+```
+
+Or you may view the current [generated documentation](https://rawgit.com/GeoffWilliams/psquared/master/doc/index.html).
+
+The documentation is no substitute for reading and understanding the module source code, and all users should ensure they are familiar and comfortable with the operations this module performs before using it.
 
 ## Limitations
+* RHEL 6/7 only
+* Not supported by Puppet, Inc.
+* Not all classes are fully functional!  Use only those with accompanying spec tests
 
-This is where you list OS compatibility, version compatibility, etc. If there
-are Known Issues, you might want to include them under their own heading here.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+PRs accepted :)
 
-## Release Notes/Contributors/Etc. **Optional**
+## Testing
+This module supports testing using [PDQTest](https://github.com/GeoffWilliams/pdqtest).
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel
-are necessary or important to include here. Please use the `## ` header.
+
+Test can be executed with:
+
+```
+bundle install
+bundle exec pdqtest all
+```
+
+See `.travis.yml` for a working CI example

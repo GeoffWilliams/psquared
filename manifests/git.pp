@@ -9,7 +9,7 @@ class psquared::git(
     $admin_user         = 'psquared',
     $admin_password     = 'changeme',
 ) {
-  
+
   $control_repo_path = "${repo_path}/${control_repo}"
   $ssh_path = "${repo_path}/.ssh"
   $hook_filename = "hooks/post-receive"
@@ -18,7 +18,7 @@ class psquared::git(
     owner => $admin_user,
     group => $admin_user,
     mode  => '0755',
-  } 
+  }
 
   #file { "/etc/puppetlabs/r10k/r10k.yaml":
   #  ensure  => file,
@@ -56,27 +56,27 @@ class psquared::git(
   }
 
   file { "${control_repo_path}/${hook_filename}":
-    ensure   => file,
-    mode     => '0755',
-    source   => "puppet:///modules/${module_name}/post-receive",
+    ensure => file,
+    mode   => '0755',
+    source => "puppet:///modules/${module_name}/post-receive",
   }
 
   # admin key :)
   user { $admin_user:
-    ensure  => $admin_key,
-    home    => $repo_path,
+    ensure => $admin_key,
+    home   => $repo_path,
   }
 
   $ssh_keyname = "psquared@${fqdn}"
   include sshkeys
 
-  sshkeys::install_keypair { $ssh_keyname: 
+  sshkeys::install_keypair { $ssh_keyname:
     ensure  => $admin_key,
     ssh_dir => $ssh_path,
   }
 
   # fixme - need to update sshkeys to allow removal
-  sshkeys::known_host { $ssh_keyname: 
+  sshkeys::known_host { $ssh_keyname:
     ssh_dir => $ssh_path,
   }
 
@@ -88,9 +88,10 @@ class psquared::git(
   }
 
   exec { "install_token_psquared":
-    command => "cd ${repo_path} && pe_rbac code_manager --password ${admin_password} && chown -R ${admin_user}.${admin_user} ${repo_path}/.puppetlabs",
-    creates => "${repo_path}/.puppetlabs/token",
-    environment => "HOME=$repo_path",
-    path    => ["/opt/puppetlabs/puppet/bin/", "/usr/bin", "/bin"],
+    command     => "cd ${repo_path} && pe_rbac code_manager --password ${admin_password} \\
+&& chown -R ${admin_user}.${admin_user} ${repo_path}/.puppetlabs",
+    creates     => "${repo_path}/.puppetlabs/token",
+    environment => "HOME=${repo_path}",
+    path        => ["/opt/puppetlabs/puppet/bin/", "/usr/bin", "/bin"],
   }
 }

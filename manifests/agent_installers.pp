@@ -1,4 +1,11 @@
+# Psquared::Agent_installers
+#
 # Download all known puppet agent installers
+#
+# @param install True to install all known agent installers except for OSX
+#   otherwise do not install anything
+# @param install_osx_agents True to also install OSX agent installers otherwise
+#   do nothing
 class psquared::agent_installers(
     $install                = true,
     $install_osx_agents     = false,
