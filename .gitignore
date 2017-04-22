@@ -3,6 +3,5 @@ Gemfile.lock
 Puppetfile.lock
 .librarian
 .tmp
-/pkg
 .yardoc
-
+/pkg

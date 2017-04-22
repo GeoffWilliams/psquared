@@ -1,6 +1,6 @@
 {
   "name": "geoffwilliams-psquared",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "geoffwilliams",
   "summary": "Puppet Squared",
   "license": "Apache-2.0",
@@ -9,7 +9,7 @@
   "issues_url": "https://github.com/GeoffWilliams/psquared/issues",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
-    {"name":"geoffwilliams-pe_repo","version_requirement":"0.1.2"},
+    {"name":"geoffwilliams-pe_repo","version_requirement":"0.2.0"},
     {"name":"geoffwilliams-pe_staging","version_requirement":"0.1.0"}
   ],
   "data_provider": null

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/GeoffWilliams/psquared.svg?branch=master)](https://travis-ci.org/GeoffWilliams/psquared)
+[![Build Status](https://travis-ci.org/GeoffWilliams/declarativesystems.svg?branch=master)](https://travis-ci.org/declarativesystems/psquared)
 # psquared
 
 #### Table of Contents
