@@ -10,7 +10,12 @@ Puppet::Functions.create_function(:'psquared::list_agent_platforms') do
 
     Dir.glob("/opt/puppetlabs/puppet/modules/pe_repo/manifests/platform/*.pp").each { |f|
       puppet_classpart = File.basename(f).gsub(/\.pp$/,'')
-      platform_classes << "pe_repo::platform::#{puppet_classpart}"
+
+      # some classes are deprecated to agents being EOLed - these classes just
+      # have a notify resource so can be safely ignored
+      if File.readlines(f).grep(/deprecation/).size == 0
+        platform_classes << "pe_repo::platform::#{puppet_classpart}"
+      end
     }
     platform_classes
   end
